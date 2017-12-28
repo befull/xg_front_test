@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+    <script type="application/javascript" src="jquery-2.2.3.min.js"></script>
+</head>
+<body>
+
+<form id="myform" action="" method="post">
+    <div style="height: 200px; width: 400px; border: dashed 1px seagreen;">
+    <input id="v1" type="text" name="v1" value="1"><br>
+    <input id="dosub" type="submit" name="dosub" value=" 提交 ">
+    </div>
+</form>
+
+<div id="out"></div>
+
+
+<script>
+
+    $(document).ready(function(){
+        $("#myform").bind('submit', function(){
+            //设置保存全部的样式
+            var ts = $(this);
+            var ts_old_val = ts.val();
+            ts.val('提交中...');
+            ts.attr("disabled",true);
+            $.ajax({
+                type: "post",
+                url: 't1.php',
+                data: {
+                    'v':$("#v1").val()
+                },
+                cache: false,
+                //processData: false,
+                //contentType: false,
+                dataType: 'json',
+                success: function (ret) {
+                    ts.val(ts_old_val);
+                    ts.attr("disabled",false);
+
+                    $("#out").append(','+ret.val);
+                    $("#v1").val(ret.val)
+                    console.log('do sub');
+                },
+                complete: function(d){
+
+                }
+
+            });
+            return false;
+        })
+
+    });
+</script>
+
+
+</body>
+</html>
